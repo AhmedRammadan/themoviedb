@@ -4,8 +4,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-const String storageBaseUrl = "/storage/";
-const String baseUrl = "http://transmission-dev.azurewebsites.net/api/";
+const String baseUrl = "https://api.themoviedb.org/3";
+const String apiKey = '23d5dabb330b62a3ce8a9812114c03b4';
+const String imageBaseUrlFace = 'https://www.themoviedb.org/t/p/w470_and_h470_face';
+const String imageBaseUrlDetails = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2';
+const String imageBaseUrlOriginal = 'https://www.themoviedb.org/t/p/original';
 
 class APIHelper {
   static Future<dynamic> get(String url, context) async {
@@ -18,9 +21,6 @@ class APIHelper {
       });
       responseJson = json.decode(response.body.toString());
       _debugPrint("responseJson : $responseJson");
-      if (responseJson['message'] == "Unauthenticated.") {
-        // Provider.of<AccountProvider>(context, listen: false).logout(context);
-      }
     } on SocketException {
       _debugPrint('SocketException : No Internet connection');
     } catch (e) {
@@ -36,7 +36,6 @@ class APIHelper {
     _debugPrint('Api Post, \nurl : ${baseUrl + url} \nbody : $body');
     Map<String, dynamic>? responseJson;
     try {
-
       final response =
           await http.post(Uri.parse(baseUrl + url), body: body, headers: {
         'Accept': ' application/json',
@@ -44,9 +43,7 @@ class APIHelper {
       });
       responseJson = json.decode(response.body.toString());
       _debugPrint("responseJson : $responseJson");
-      if (responseJson!['message'] == "Unauthenticated.") {
-        //Provider.of<AccountProvider>(context, listen: false).logout(context);
-      }
+
     } on SocketException {
       _debugPrint('SocketException : No Internet connection');
     } catch (e) {

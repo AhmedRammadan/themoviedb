@@ -1,66 +1,62 @@
-class FamousPerson {
-  FamousPerson({
-    required this.adult,
+class PersonKnownForModel {
+  PersonKnownForModel({
     required this.backdropPath,
+    required this.firstAirDate,
     required this.genreIds,
     required this.id,
     required this.mediaType,
+    required this.name,
+    required this.originCountry,
     required this.originalLanguage,
-    required this.originalTitle,
+    required this.originalName,
     required this.overview,
     required this.posterPath,
-    required this.releaseDate,
-    required this.title,
-    required this.video,
     required this.voteAverage,
     required this.voteCount,
   });
-  late final bool adult;
   late final String backdropPath;
+  late final String firstAirDate;
   late final List<int> genreIds;
   late final int id;
   late final String mediaType;
+  late final String name;
+  late final List<String> originCountry;
   late final String originalLanguage;
-  late final String originalTitle;
+  late final String originalName;
   late final String overview;
   late final String posterPath;
-  late final String releaseDate;
-  late final String title;
-  late final bool video;
-  late final double voteAverage;
+  late final double? voteAverage;
   late final int voteCount;
 
-  FamousPerson.fromJson(Map<String, dynamic> json) {
-    adult = json['adult'];
+  PersonKnownForModel.fromJson(Map<String, dynamic> json) {
     backdropPath = json['backdrop_path'];
+    firstAirDate = json['first_air_date'];
     genreIds = List.castFrom<dynamic, int>(json['genre_ids']);
     id = json['id'];
     mediaType = json['media_type'];
+    name = json['name'];
+    originCountry = List.castFrom<dynamic, String>(json['origin_country']);
     originalLanguage = json['original_language'];
-    originalTitle = json['original_title'];
+    originalName = json['original_name'];
     overview = json['overview'];
     posterPath = json['poster_path'];
-    releaseDate = json['release_date'];
-    title = json['title'];
-    video = json['video'];
     voteAverage = json['vote_average'];
     voteCount = json['vote_count'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['adult'] = adult;
     _data['backdrop_path'] = backdropPath;
+    _data['first_air_date'] = firstAirDate;
     _data['genre_ids'] = genreIds;
     _data['id'] = id;
     _data['media_type'] = mediaType;
+    _data['name'] = name;
+    _data['origin_country'] = originCountry;
     _data['original_language'] = originalLanguage;
-    _data['original_title'] = originalTitle;
+    _data['original_name'] = originalName;
     _data['overview'] = overview;
     _data['poster_path'] = posterPath;
-    _data['release_date'] = releaseDate;
-    _data['title'] = title;
-    _data['video'] = video;
     _data['vote_average'] = voteAverage;
     _data['vote_count'] = voteCount;
     return _data;
