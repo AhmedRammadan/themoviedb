@@ -30,7 +30,7 @@ class PersonModel {
     knownForDepartment = json['known_for_department'];
     name = json['name'];
     popularity = json['popularity'];
-    profilePath = json['profile_path'];
+    profilePath = json['profile_path']??"";
   }
 
   Map<String, dynamic> toJson() {

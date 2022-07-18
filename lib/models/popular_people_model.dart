@@ -7,8 +7,8 @@ class PopularPeopleModel {
     required this.totalPages,
     required this.totalResults,
   });
-  late final int page;
-  late final List<PersonModel> results;
+  late int page;
+  late  List<PersonModel> results;
   late final int totalPages;
   late final int totalResults;
 

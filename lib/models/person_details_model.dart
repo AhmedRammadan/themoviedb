@@ -33,14 +33,14 @@ class PersonDetailsModel {
   late final String profilePath;
   late final List<Profiles> profiles;
 
-  PersonDetailsModel.fromJson(Map<String, dynamic> json) {
+  PersonDetailsModel.fromJson(Map<String, dynamic> json,Map<String, dynamic> resProfile) {
     adult = json['adult'];
     alsoKnownAs = List.castFrom<dynamic, String>(json['also_known_as']);
     biography = json['biography'];
-    birthday = json['birthday'];
-    deathday = json['deathday'];
+    birthday = json['birthday']??"";
+    deathday = json['deathday']??"";
     gender = json['gender'];
-    homepage = json['homepage'];
+    homepage = json['homepage']??"";
     id = json['id'];
     imdbId = json['imdb_id'];
     knownForDepartment = json['known_for_department'];
@@ -48,12 +48,10 @@ class PersonDetailsModel {
     placeOfBirth = json['place_of_birth'];
     popularity = json['popularity'];
     profilePath = json['profile_path'];
+    profiles =
+        List.from(resProfile['profiles']).map((e) => Profiles.fromJson(e)).toList();
   }
 
-  PersonDetailsModel.fromJsonProfiles(Map<String, dynamic> json) {
-    profiles =
-        List.from(json['profiles']).map((e) => Profiles.fromJson(e)).toList();
-  }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};

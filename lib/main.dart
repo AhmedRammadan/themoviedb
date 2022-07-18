@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:themoviedb/provider/person_details_provider.dart';
+import 'package:themoviedb/provider/popular_people_provider.dart';
 import 'ui/screens/home_screen.dart';
 
 void main() async {
@@ -15,13 +18,15 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'SceneNow',
-      initialRoute: '/',
-      routes: {
-        '/': (context) => HomeScreen(),
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => PopularPeopleProvider()),
+        ChangeNotifierProvider(create: (context) => PersonDetailsProvider()),
+      ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: HomeScreen(),
+      ),
     );
   }
 }

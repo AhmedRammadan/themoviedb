@@ -29,18 +29,19 @@ class PersonKnownForModel {
   late final int voteCount;
 
   PersonKnownForModel.fromJson(Map<String, dynamic> json) {
-    backdropPath = json['backdrop_path'];
-    firstAirDate = json['first_air_date'];
+    backdropPath = json['backdrop_path']??"";
+    firstAirDate = json['first_air_date'] ?? "";
     genreIds = List.castFrom<dynamic, int>(json['genre_ids']);
     id = json['id'];
     mediaType = json['media_type'];
-    name = json['name'];
-    originCountry = List.castFrom<dynamic, String>(json['origin_country']);
-    originalLanguage = json['original_language'];
-    originalName = json['original_name'];
-    overview = json['overview'];
-    posterPath = json['poster_path'];
-    voteAverage = json['vote_average'];
+    name = json['name'] ?? "";
+    originCountry =
+        List.castFrom<dynamic, String>(json['origin_country'] ?? []);
+    originalLanguage = json['original_language']??"";
+    originalName = json['original_name']??"";
+    overview = json['overview']??"";
+    posterPath = json['poster_path']??"";
+    voteAverage = double.parse("${json['vote_average']}");
     voteCount = json['vote_count'];
   }
 

@@ -19,7 +19,7 @@ class Profiles {
   Profiles.fromJson(Map<String, dynamic> json){
     aspectRatio = json['aspect_ratio'];
     height = json['height'];
-    iso_639_1 = json['iso_639_1'];
+    iso_639_1 = json['iso_639_1']??"";
     filePath = json['file_path'];
     voteAverage = json['vote_average'];
     voteCount = json['vote_count'];
