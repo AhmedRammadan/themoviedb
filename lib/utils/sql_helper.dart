@@ -1,21 +1,19 @@
-import 'dart:js_util/js_util_wasm.dart';
-
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
 import '../models/person_model.dart';
 
 class SQLHelper {
+
   static Future<void> createTables(sql.Database database) async {
     await database.execute("""CREATE TABLE people(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         adult TEXT,
-        gender TEXT,
-        id_person TEXT,
-        known_for TEXT,
+        gender NUM,
+        id_person NUM,
         known_for_department TEXT,
         name TEXT,
-        popularity TEXT,
+        popularity NUM,
         profile_path TEXT,
         createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
@@ -25,7 +23,7 @@ class SQLHelper {
   static Future<sql.Database> db() async {
     return sql.openDatabase(
       'movies.db',
-      version: 1,
+      version: 4,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
       },
@@ -33,8 +31,9 @@ class SQLHelper {
   }
 
   // Create new people
-  static Future<int> createItem(List<PersonModel>? people) async {
+  static Future<int> createListPeople(List<PersonModel>? people) async {
     final db = await SQLHelper.db();
+    deleteAll();
     for(PersonModel personModel in people!){
       final id = await db.insert('people', personModel.toJson(),
           conflictAlgorithm: sql.ConflictAlgorithm.replace);
@@ -48,7 +47,7 @@ class SQLHelper {
     final db = await SQLHelper.db();
     List<Map<String, dynamic>> peopleDB = await db.query('people');
     for(var personModel in peopleDB){
-      people.add(PersonModel.fromJson(personModel));
+      people.add(PersonModel.fromJsonSQLDB(personModel));
     }
     return people;
   }
@@ -81,6 +80,15 @@ class SQLHelper {
     final db = await SQLHelper.db();
     try {
       await db.delete("people", where: "id = ?", whereArgs: [id]);
+    } catch (err) {
+      debugPrint("Something went wrong when deleting an item: $err");
+    }
+  }  // Delete All people
+
+  static Future<void> deleteAll() async {
+    final db = await SQLHelper.db();
+    try {
+      await db.delete("people");
     } catch (err) {
       debugPrint("Something went wrong when deleting an item: $err");
     }

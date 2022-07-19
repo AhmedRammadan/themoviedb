@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import '../models/person_details_model.dart';
+import '../utils/constants.dart';
 import '../utils/network.dart';
 
 class PersonDetailsProvider with ChangeNotifier {
@@ -21,12 +22,16 @@ class PersonDetailsProvider with ChangeNotifier {
   bool isLoading = true;
 
   fetchPersonDetails(context, int id) async {
-    isLoading = true;
-    var res = await APIHelper.get("/person/$id?", context);
-    var resProfile = await APIHelper.get("/person/$id/images?", context);
-    personModel = PersonDetailsModel.fromJson(res,resProfile);
-    isLoading = false;
-    notifyListeners();
+    if (await Constants.checkNetwork()) {
+      isLoading = true;
+      var res = await APIHelper.get("/person/$id?", context);
+      var resProfile = await APIHelper.get("/person/$id/images?", context);
+      personModel = PersonDetailsModel.fromJson(res, resProfile);
+      isLoading = false;
+      notifyListeners();
+    } else {
+      Constants.notConnectedDialog(context);
+    }
   }
 
   PersonDetailsModel getPersonDetails() => personModel!;

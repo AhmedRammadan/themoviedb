@@ -27,6 +27,7 @@ class _MyImageState extends State<MyImage> {
           Constants.initProgressDialog(isShowing: true, context: context);
           Directory appDocDir = await getApplicationDocumentsDirectory();
           String appDocPath = appDocDir.path;
+
           print(appDocPath);
           var response = await Dio().download(
               imageBaseUrlOriginal + widget.filePath,

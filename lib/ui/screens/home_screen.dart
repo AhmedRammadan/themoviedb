@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../../models/person_model.dart';
 import '../../models/popular_people_model.dart';
 import '../../provider/popular_people_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/constants.dart';
 import '../widgets/popular_people_item.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,8 +25,13 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     fetchData();
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    _scrollController.dispose();
   }
 
   fetchData() async {
@@ -37,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
   }
+
 
   @override
   Widget build(BuildContext context) {

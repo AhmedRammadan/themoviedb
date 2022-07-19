@@ -21,7 +21,7 @@ class PersonModel {
   late final String profilePath;
 
   PersonModel.fromJson(Map<String, dynamic> json) {
-    adult = json['adult'];
+    adult =json['adult']==0?false:true; json['adult'];
     gender = json['gender'];
     id = json['id'];
     knownFor = List.from(json['known_for'])
@@ -33,13 +33,22 @@ class PersonModel {
     profilePath = json['profile_path']??"";
   }
 
+PersonModel.fromJsonSQLDB(Map<String, dynamic> json) {
+    adult =json['adult']==0?false:true;
+    gender = json['gender'];
+    id = json['id'];
+    knownForDepartment = json['known_for_department'];
+    name = json['name'];
+    popularity = json['popularity'];
+    profilePath = json['profile_path']??"";
+  }
+
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['adult'] = adult;
+    _data['adult'] = adult ? 0:1;
     _data['gender'] = gender;
-    _data['id_person'] = id;
-    _data['known_for'] = knownFor.map((e) => e.toJson()).toList();
     _data['known_for_department'] = knownForDepartment;
+    _data['id_person'] = id;
     _data['name'] = name;
     _data['popularity'] = popularity;
     _data['profile_path'] = profilePath;
