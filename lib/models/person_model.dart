@@ -37,7 +37,7 @@ class PersonModel {
     final _data = <String, dynamic>{};
     _data['adult'] = adult;
     _data['gender'] = gender;
-    _data['id'] = id;
+    _data['id_person'] = id;
     _data['known_for'] = knownFor.map((e) => e.toJson()).toList();
     _data['known_for_department'] = knownForDepartment;
     _data['name'] = name;

@@ -1,23 +1,30 @@
+import 'dart:js_util/js_util_wasm.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
+import '../models/person_model.dart';
+
 class SQLHelper {
   static Future<void> createTables(sql.Database database) async {
-    await database.execute("""CREATE TABLE items(
+    await database.execute("""CREATE TABLE people(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        title TEXT,
-        description TEXT,
+        adult TEXT,
+        gender TEXT,
+        id_person TEXT,
+        known_for TEXT,
+        known_for_department TEXT,
+        name TEXT,
+        popularity TEXT,
+        profile_path TEXT,
         createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
       """);
   }
-// id: the id of a item
-// title, description: name and description of your activity
-// created_at: the time that the item was created. It will be automatically handled by SQLite
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'kindacode.db',
+      'movies.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
@@ -25,27 +32,32 @@ class SQLHelper {
     );
   }
 
-  // Create new item (journal)
-  static Future<int> createItem(String title, String? descrption) async {
+  // Create new people
+  static Future<int> createItem(List<PersonModel>? people) async {
     final db = await SQLHelper.db();
-
-    final data = {'title': title, 'description': descrption};
-    final id = await db.insert('items', data,
-        conflictAlgorithm: sql.ConflictAlgorithm.replace);
-    return id;
+    for(PersonModel personModel in people!){
+      final id = await db.insert('people', personModel.toJson(),
+          conflictAlgorithm: sql.ConflictAlgorithm.replace);
+    }
+    return 0;
   }
 
-  // Read all items (journals)
-  static Future<List<Map<String, dynamic>>> getItems() async {
+  // Read all people
+  static Future<List<PersonModel>> getPeople() async {
+    List<PersonModel>? people = [];
     final db = await SQLHelper.db();
-    return db.query('items', orderBy: "id");
+    List<Map<String, dynamic>> peopleDB = await db.query('people');
+    for(var personModel in peopleDB){
+      people.add(PersonModel.fromJson(personModel));
+    }
+    return people;
   }
 
   // Read a single item by id
   // The app doesn't use this method but I put here in case you want to see it
   static Future<List<Map<String, dynamic>>> getItem(int id) async {
     final db = await SQLHelper.db();
-    return db.query('items', where: "id = ?", whereArgs: [id], limit: 1);
+    return db.query('people', where: "id = ?", whereArgs: [id], limit: 1);
   }
 
   // Update an item by id
@@ -60,7 +72,7 @@ class SQLHelper {
     };
 
     final result =
-    await db.update('items', data, where: "id = ?", whereArgs: [id]);
+    await db.update('people', data, where: "id = ?", whereArgs: [id]);
     return result;
   }
 
@@ -68,7 +80,7 @@ class SQLHelper {
   static Future<void> deleteItem(int id) async {
     final db = await SQLHelper.db();
     try {
-      await db.delete("items", where: "id = ?", whereArgs: [id]);
+      await db.delete("people", where: "id = ?", whereArgs: [id]);
     } catch (err) {
       debugPrint("Something went wrong when deleting an item: $err");
     }
